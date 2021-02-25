@@ -98,7 +98,7 @@ let chromeCommand = commandArgs.join('\\\n  --');
 console.white(`\n${chromeCommand}\n`);
 
 let pipedCommand = (command, outputPipe) => `unbuffer ${command} | node ${outputPipe} &&`;
-let pipedBuildCommand = args.build ? pipedCommand(`NINJA_COMMAND ${args.out}`, BUILD_OUTPUT_PIPE) : '';
+let pipedBuildCommand = args.build ? pipedCommand(`${NINJA_COMMAND} ${args.out}`, BUILD_OUTPUT_PIPE) : '';
 let pipedChromeCommand = pipedCommand(chromeCommand, CHROME_OUTPUT_PIPE);
 let command = `set -o pipefail && pushd ${CHROME_DIR} && ${pipedBuildCommand} ${pipedChromeCommand} popd`;
 
