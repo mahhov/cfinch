@@ -4,13 +4,18 @@ const childProcess = require('child_process');
 const ArgsListParser = require('args-list-parser');
 
 const CHROME_DIR = '~/workspace/chromium/src';
-const BUILD_COMMAND = '~/workspace/depot_tools/ninja -C out/Default -j 1000 chrome';
+const NINJA_COMMAND = '~/workspace/depot_tools/ninja -j 1000 chrome -C';
 const BUILD_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/translatePaths.js';
-const CHROME_COMMAND = 'out/Default/chrome';
 const CHROME_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/translateRunColors.js';
 
 const argDescriptions = [
 	{
+		names: ['out', 'o'],
+		defaultValues: ['out/Default'],
+		values: 1,
+		example: '-o out/Default',
+		explanation: 'overrides the default build dir out/Default.'
+	}, {
 		names: ['build', 'b'],
 		values: 0,
 		example: '-b',
@@ -64,8 +69,14 @@ let args = new ArgsListParser(argDescriptions).parse();
 if (!args)
 	return;
 
+if (args.param && (!args.study || !args.group || !args.feature))
+	console.warn("Specifying a 'param' argument usually requires also specifying the 'study', 'group', and 'feature' arguments.");
+
+if (args.group && !args.channel)
+	console.warn("Specifying a 'group' argument usually requires also specifying the 'channel' argument.");
+
 // Create command
-let commandArgs = [CHROME_COMMAND];
+let commandArgs = [`${args.out}/chrome`];
 if (args.channel)
 	commandArgs.push(`fake-variations-channel=${args.channel[0]}`);
 if (args.dogfood)
@@ -87,7 +98,7 @@ let chromeCommand = commandArgs.join('\\\n  --');
 console.white(`\n${chromeCommand}\n`);
 
 let pipedCommand = (command, outputPipe) => `unbuffer ${command} | node ${outputPipe} &&`;
-let pipedBuildCommand = args.build ? pipedCommand(BUILD_COMMAND, BUILD_OUTPUT_PIPE) : '';
+let pipedBuildCommand = args.build ? pipedCommand(`NINJA_COMMAND ${args.out}`, BUILD_OUTPUT_PIPE) : '';
 let pipedChromeCommand = pipedCommand(chromeCommand, CHROME_OUTPUT_PIPE);
 let command = `set -o pipefail && pushd ${CHROME_DIR} && ${pipedBuildCommand} ${pipedChromeCommand} popd`;
 
