@@ -53,6 +53,7 @@ out/Default/chrome\
 ```
 > cfinch help
 Arguments:
+    -o out/Default                                              out|o         single string       overrides the default build dir out/Default.                                                  
     -b                                                          build|b       no values           rebuilds.                                                                                     
     -c beta                                                     channel|c     single string       sets fake-variations-channel=beta and variations-server-url=http://localhost:8080/seed        
     -d                                                          dogfood|d     no values           sets variations-server-url=http://localhost:8080/seed?restrict=dogfood                        

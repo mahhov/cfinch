@@ -14,7 +14,7 @@ const argDescriptions = [
 		defaultValues: ['out/Default'],
 		values: 1,
 		example: '-o out/Default',
-		explanation: 'overrides the default build dir out/Default.'
+		explanation: 'overrides the default build dir "out/Default"'
 	}, {
 		names: ['build', 'b'],
 		values: 0,
