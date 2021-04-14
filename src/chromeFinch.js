@@ -5,8 +5,8 @@ const ArgsListParser = require('args-list-parser');
 
 const CHROME_DIR = '~/workspace/chromium/src';
 const NINJA_COMMAND = '~/workspace/depot_tools/ninja -j 1000 chrome -C';
-const BUILD_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/translatePaths.js';
-const CHROME_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/translateRunColors.js';
+const BUILD_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/src/translatePaths.js';
+const CHROME_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/src/translateRunColors.js';
 
 const argDescriptions = [
 	{
@@ -38,6 +38,7 @@ const argDescriptions = [
 		explanation: 'overrides the default study "OmniboxBundledExperimentV1" used below'
 	}, {
 		names: ['group', 'g'],
+		defaultValues: ['Default'],
 		values: 1,
 		example: '-g Dev_Desktop_OmniboxDocumentMinCharacters_Control_V2',
 		explanation: 'sets force-fieldtrials=study/group'
@@ -72,8 +73,8 @@ if (!args)
 if (args.param && (!args.study || !args.group || !args.feature))
 	console.warn("Specifying a 'param' argument usually requires also specifying the 'study', 'group', and 'feature' arguments.");
 
-if (args.group && !args.channel)
-	console.warn("Specifying a 'group' argument usually requires also specifying the 'channel' argument.");
+if (args.group && !args.channel && !args.feature)
+	console.warn("specifying a 'group' argument usually requires also specifying the 'channel' argument.");
 
 // Create command
 let commandArgs = [`${args.out}/chrome`];
