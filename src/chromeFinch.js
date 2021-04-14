@@ -2,11 +2,10 @@
 
 const childProcess = require('child_process');
 const ArgsListParser = require('args-list-parser');
+const Formatter = require('./colorChrome/Formatter');
 
 const CHROME_DIR = '~/workspace/chromium/src';
 const NINJA_COMMAND = '~/workspace/depot_tools/ninja -j 1000 chrome -C';
-const BUILD_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/src/translatePaths.js';
-const CHROME_OUTPUT_PIPE = '/usr/local/google/home/manukh/personal/colorChrome/src/translateRunColors.js';
 
 const argDescriptions = [
 	{
@@ -98,13 +97,18 @@ if (args.google)
 let chromeCommand = commandArgs.join('\\\n  --');
 console.white(`\n${chromeCommand}\n`);
 
-let pipedCommand = (command, outputPipe) => `unbuffer ${command} | node ${outputPipe} &&`;
-let pipedBuildCommand = args.build ? pipedCommand(`${NINJA_COMMAND} ${args.out}`, BUILD_OUTPUT_PIPE) : '';
-let pipedChromeCommand = pipedCommand(chromeCommand, CHROME_OUTPUT_PIPE);
-let command = `set -o pipefail && pushd ${CHROME_DIR} && ${pipedBuildCommand} ${pipedChromeCommand} popd`;
+let command = [
+	'set -o pipefail',
+	`pushd ${CHROME_DIR}`,
+	args.build ? `unbuffer ${NINJA_COMMAND} ${args.out}` : '',
+	`unbuffer ${chromeCommand}`,
+	'popd',
+].filter(a => a).join(' && ');
 
-let spawnedData = data => data.toString().trim();
+let formatter = new Formatter();
+formatter.on('line', line => console.log(line));
+
 let spawned = childProcess.spawn(command, {shell: true});
-spawned.stdout.on('data', data => console.log(spawnedData(data)));
-spawned.stderr.on('data', data => console.error(spawnedData(data)));
-spawned.on('error', err => console.error('err', err));
+spawned.stdout.on('data', data => formatter.onData(data));
+spawned.stderr.on('data', data => formatter.onData(data));
+spawned.on('error', err => formatter.onLine('err', err));

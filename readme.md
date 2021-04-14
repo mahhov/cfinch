@@ -1,10 +1,8 @@
 # cfinch
 
-## Description
-
 Generate command line arguments for running chromium with finch configurations.
 
-## Examples
+## Common examples
 
 ### Configuring features & params:
 
@@ -38,7 +36,7 @@ out/Default/chrome\
   --force-fieldtrials=myStudy/myGroup
 ```
 
-## Chromium params supported
+## chromium params supported
 
 1. `fake-variations-channel`
 1. `variations-server-url`
@@ -52,7 +50,7 @@ out/Default/chrome\
 
 1. clone this repo & run `npm i`
 
-1. Add an alias `cfinch` to `yourPath/chromeFinch/chromeFinch.js "$@"`
+1. Add an alias `cfinch` to `<path>/chromeFinch/src/chromeFinch.js "$@"`
 
 1. Run `cfinch help` to print:
 
@@ -70,3 +68,85 @@ Arguments:
     -gi t3315884 3314219 ...                                    gwsid|gi      multiple strings    sets force-variation-ids="t3315884,3314219,..."                                               
     -gbu https://manukh-4.demos.corp.google.com/                google|gbu    single string       sets google-base-url=https://manukh-4.demos.corp.google.com/
 ```
+
+## Output formatting
+
+To make reading output easier, it will be slightly modified according to these rules:
+
+- Replace file paths with idea IDE compatible paths.
+- Color & style output; see supported styles below
+  - E.g. `println('underline red x blue y bold z\n');` will print `underline red x blue y bold z` styled accordingly.
+- Prefix lines with line numbers
+- Print a new line when output is delayed more than 1.5s; this helps group up long outputs.
+- Hide outputs matching `/^(\/usr\/local\/google\/home\/\w+\/|~)workspace\/goma\/gomacc .*$/`.
+
+#### Examples
+
+#### Before
+
+![screenshot without transformation](./screenshots/build-untransformed.png)
+
+#### After
+
+![screenshot with transformation](./screenshots/build-transformed.png)
+
+#### Before
+
+![screenshot without transformation 3](./screenshots/run-untransformed-3.png)
+
+#### After
+
+![screenshot with transformation 3](./screenshots/run-transformed-3.png)
+
+#### Before
+
+![screenshot without transformation 3](./screenshots/untrasnformed-5.png)
+
+#### After
+
+![screenshot with transformation 3](./screenshots/transformed-5.png)
+
+#### Supported styles
+
+Misc
+
+- normal
+- bold
+- underline
+
+Colors
+
+- black
+- red
+- green
+- yellow
+- blue
+- pink
+- cyan
+- white
+- orange
+- gray
+
+Inverted colors
+
+- iblack
+- ired
+- igreen
+- iyellow
+- iblue
+- ipink
+- icyan
+- iwhite
+- iorange
+- igray
+
+Inverted light colors
+
+- ilblack
+- ilred
+- ilgreen
+- ilyellow
+- ilblue
+- ilpink
+- ilcyan
+- ilwhite
