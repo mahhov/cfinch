@@ -3,9 +3,7 @@
 const childProcess = require('child_process');
 const ArgsListParser = require('args-list-parser');
 const Formatter = require('./colorChrome/Formatter');
-
-const CHROME_DIR = '~/workspace/chromium/src';
-const NINJA_COMMAND = '~/workspace/depot_tools/ninja -j 1000 chrome -C';
+const paths = require('../paths.json');
 
 const argDescriptions = [
 	{
@@ -99,8 +97,8 @@ console.white(`\n${chromeCommand}\n`);
 
 let command = [
 	'set -o pipefail',
-	`pushd ${CHROME_DIR}`,
-	args.build ? `unbuffer ${NINJA_COMMAND} ${args.out}` : '',
+	`pushd ${paths.chromeSrc}`,
+	args.build ? `unbuffer ${paths.ninja} -j 1000 chrome -C ${args.out}` : '',
 	`unbuffer ${chromeCommand}`,
 	'popd',
 ].filter(a => a).join(' && ');

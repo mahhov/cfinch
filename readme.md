@@ -48,10 +48,10 @@ out/Default/chrome\
 
 ## Usage 
 
-1. clone this repo & run `npm i`
-
+1. Clone this repo & run `npm i`
 1. Add an alias `cfinch` to `<path>/chromeFinch/src/chromeFinch.js "$@"`
-
+1. Update `<path>/chromeFinch/paths.json` if necessary.
+    - By default, `~/workspace/chromium/src` and `~/workspace/depot_tools/ninja` will be used for the chrome src and ninja paths.
 1. Run `cfinch help` to print:
 
 ```
