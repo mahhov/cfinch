@@ -80,7 +80,7 @@ To make reading output easier, it will be slightly modified according to these r
 - Print a new line when output is delayed more than 1.5s; this helps group up long outputs.
 - Hide outputs matching `/^(\/usr\/local\/google\/home\/\w+\/|~)workspace\/goma\/gomacc .*$/`.
 
-#### Examples
+### Examples
 
 #### Before
 
