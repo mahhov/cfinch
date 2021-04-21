@@ -5,10 +5,12 @@ const fs = require('fs').promises;
 const ChromeFinch = require('../src/ChromeFinch');
 
 let asyncWrapper = async () => {
+	// E.g. out/Default
+	let out = process.argv[2];
 	// E.g. <...>.gcl
-	let studyPath = process.argv[2];
+	let studyPath = process.argv[3];
 	// E.g. Dev_Desktop_OmniboxEntityLatency_SharedDecoder_V2
-	let groupName = process.argv[3];
+	let groupName = process.argv[4];
 
 	if (!studyPath || !groupName)
 		return console.warn('Missing inputs', studyPath, groupName);
@@ -18,6 +20,7 @@ let asyncWrapper = async () => {
 	let channel = groupName.match(/dev|beta|stable/i)?.[0].toLowerCase() || 'stable';
 
 	new ChromeFinch().run([
+		'-o', out,
 		'-c', channel,
 		...(studyName ? ['-s', studyName] : []),
 		'-g', groupName,
@@ -33,7 +36,3 @@ asyncWrapper();
 //     --fake-variations-channel=dev\
 //     --variations-server-url=http://localhost:8080/seed\
 //     --force-fieldtrials=<study_name>/Dev_Desktop_OmniboxEntityLatency_SharedDecoder_V2
-
-// To use with idea IDEs, configure an 'external tool' with:
-//   Program:   <...>/node/<version>/bin/node
-//   Arguments: <...>/chromeFinch/bin/cfinch_study_ide $FilePath$ $SelectedText$

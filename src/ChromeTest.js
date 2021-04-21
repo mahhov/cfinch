@@ -30,8 +30,7 @@ class ChromeTest extends Runner {
 	}
 
 	checkArgs(args) {
-		if (!args)
-			return console.warn('Failed to get args.');
+		if (!args) return;
 		if (!args.filter)
 			return console.warn('No filter set.');
 		return true;

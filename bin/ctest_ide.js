@@ -5,8 +5,10 @@ const fs = require('fs').promises;
 const ChromeTest = require('../src/ChromeTest');
 
 let asyncWrapper = async () => {
+	// E.g. out/Default
+	let out = process.argv[2];
 	// E.g. <...>/src/components/omnibox/browser/document_provider_unittest.cc
-	let testFilePath = process.argv[2];
+	let testFilePath = process.argv[3];
 
 	let cachePath = path.resolve(__dirname, '_cached_ctest_ide_inputs.txt');
 	if (testFilePath && testFilePath.match(/test\.cc$/))
@@ -27,6 +29,7 @@ let asyncWrapper = async () => {
 
 	new ChromeTest().run([
 		'-b',
+		'-o', out,
 		'-s', testSet,
 		'-f', `${testName}.*`,
 	]);
@@ -38,7 +41,3 @@ asyncWrapper();
 //   ctest_ide <...>/src/components/omnibox/browser/document_provider_unittest.cc
 // to
 //   out/Default/components_unittests --gtest_filter=DocumentProviderTest.*
-
-// To use with idea IDEs, configure an 'external tool' with:
-//   Program:   <...>/node/<version>/bin/node
-//   Arguments: <...>/chromeFinch/bin/ctest_ide $FilePath$
