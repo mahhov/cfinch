@@ -69,8 +69,8 @@ class ChromeFinch extends Runner {
 		return true;
 	}
 
-	runCommandArgs(args) {
-		let commandArgs = [`${args.out}/chrome`];
+	runArgs(args) {
+		let commandArgs = [];
 		if (args.channel)
 			commandArgs.push(`fake-variations-channel=${args.channel[0]}`);
 		if (args.dogfood)
@@ -88,6 +88,18 @@ class ChromeFinch extends Runner {
 		if (args.google)
 			commandArgs.push(`google-base-url=${args.google[0]}`);
 		return commandArgs;
+	}
+
+	build(args) {
+		return args.build;
+	}
+
+	buildName(args) {
+		return 'chrome';
+	}
+
+	out(args) {
+		return args.out[0];
 	}
 }
 

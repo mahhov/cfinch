@@ -9,7 +9,7 @@ class Runner {
 	run(argStrings = undefined) {
 		let args = new ArgsListParser(this.argDescriptions).parse(argStrings);
 		if (this.checkArgs(args))
-			Runner.spawnHelper(this.runCommandArgs(args), this.build(args), this.out(args));
+			Runner.spawnHelper(this.runArgs(args), this.build(args), this.buildName(args), this.out(args));
 	}
 
 	get argDescriptions() {
@@ -20,31 +20,36 @@ class Runner {
 		/* override */
 	}
 
-	runCommandArgs(args) {
+	runArgs(args) {
 		/* override */
 	}
 
 	build(args) {
 		/* override */
-		return args.build;
+	}
+
+	buildName(args) {
+		/* override */
 	}
 
 	out(args) {
 		/* override */
-		return args.out[0];
 	}
 
-	static spawnHelper(runCommandArgs, build, out) {
-		let runCommand = runCommandArgs.join('\\\n  --');
+	static spawnHelper(runArgs, build, buildName, out) {
+		let buildCommand = build ? `${paths.ninja} -j 1000 -C ${out} ${buildName}` : '';
+		let runCommand = [`${out}/${buildName}`, ...runArgs].join('\\\n  --');
 		console.log('');
 		console.green(new Date().toLocaleString());
+		if (buildCommand)
+			console.green(buildCommand);
 		console.green(runCommand);
 		console.log('');
 
 		let command = [
 			'set -o pipefail',
 			`pushd ${paths.chromeSrc}`,
-			build ? `unbuffer ${paths.ninja} -j 1000 chrome -C ${out}` : '',
+			buildCommand ? `unbuffer ${buildCommand}` : '',
 			`unbuffer ${runCommand}`,
 			'popd',
 		].filter(a => a).join(' && ');

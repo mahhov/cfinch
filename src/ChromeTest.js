@@ -36,8 +36,20 @@ class ChromeTest extends Runner {
 		return true;
 	}
 
-	runCommandArgs(args) {
-		return([`${args.out[0]}/${args.set[0]} --gtest_filter=${args.filter[0]}`]);
+	runArgs(args) {
+		return([`gtest_filter=${args.filter[0]}`]);
+	}
+
+	build(args) {
+		return args.build ;
+	}
+
+	buildName(args) {
+		return args.set[0];
+	}
+
+	out(args) {
+		return args.out[0];
 	}
 }
 
