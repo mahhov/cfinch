@@ -88,7 +88,7 @@ out/Default/components_unittests --gtest_filter=MemoriesServiceTest.*
 Arguments:
     -o out/Default              out|o       single string    overrides the default build dir "out/Default"
     -b                          build|b     no values        rebuilds.
-    -t components_unittests     set|s       single string    overrides the default test set "components_unittest"
+    -s components_unittests     set|s       single string    overrides the default test set "components_unittest"
     -f MemoriesServiceTest.*    filter|f    single string    sets gtest_filter=filter
 ```
 

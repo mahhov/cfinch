@@ -18,7 +18,7 @@ class ChromeTest extends Runner {
 				names: ['set', 's'],
 				defaultValues: ['components_unittests'],
 				values: 1,
-				example: '-t components_unittests',
+				example: '-s components_unittests',
 				explanation: 'overrides the default test set "components_unittest"',
 			}, {
 				names: ['filter', 'f'],
