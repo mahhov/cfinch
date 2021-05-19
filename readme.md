@@ -132,7 +132,7 @@ To make reading output easier, all above scripts will be slightly modified accor
   - E.g. `println('underline red x blue y bold z\n');` will print `underline red x blue y bold z` styled accordingly.
 - Prefix lines with line numbers
 - Print a new line when output is delayed more than 1.5s; this helps group up long outputs.
-- Hide outputs matching `/^(\/usr\/local\/google\/home\/\w+\/|~)workspace\/goma\/gomacc .*$/`.
+- Hide outputs matching `/^[/\w.]+\/gomacc .*$/`.
 
 ![screenshot without transformation](./screenshots/colors.png)
 
