@@ -134,33 +134,9 @@ To make reading output easier, all above scripts will be slightly modified accor
 - Print a new line when output is delayed more than 1.5s; this helps group up long outputs.
 - Hide outputs matching `/^(\/usr\/local\/google\/home\/\w+\/|~)workspace\/goma\/gomacc .*$/`.
 
-### Examples
+![screenshot without transformation](./screenshots/colors.png)
 
-#### Before
-
-![screenshot without transformation](./screenshots/build-untransformed.png)
-
-#### After
-
-![screenshot with transformation](./screenshots/build-transformed.png)
-
-#### Before
-
-![screenshot without transformation 3](./screenshots/run-untransformed-3.png)
-
-#### After
-
-![screenshot with transformation 3](./screenshots/run-transformed-3.png)
-
-#### Before
-
-![screenshot without transformation 3](./screenshots/untrasnformed-5.png)
-
-#### After
-
-![screenshot with transformation 3](./screenshots/transformed-5.png)
-
-#### Supported styles
+## Supported styles
 
 Misc
 

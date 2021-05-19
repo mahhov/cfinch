@@ -38,6 +38,6 @@ let asyncWrapper = async () => {
 asyncWrapper();
 
 // Translates
-//   ctest_ide <...>/src/components/omnibox/browser/document_provider_unittest.cc
+//   ctest_ide out/Default <...>/src/components/omnibox/browser/document_provider_unittest.cc
 // to
 //   out/Default/components_unittests --gtest_filter=DocumentProviderTest.*

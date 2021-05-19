@@ -30,7 +30,7 @@ let asyncWrapper = async () => {
 asyncWrapper();
 
 // Translates
-//   cfinch_study_ide <...>.gcl Dev_Desktop_OmniboxEntityLatency_SharedDecoder_V2
+//   cfinch_study_ide out/Default <...>.gcl Dev_Desktop_OmniboxEntityLatency_SharedDecoder_V2
 // to
 //   out/Default/chrome\
 //     --fake-variations-channel=dev\

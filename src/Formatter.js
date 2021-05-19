@@ -53,7 +53,7 @@ class Formatter extends EventEmitter {
 		};
 
 		this.BLOCKED_MESSAGES = [
-			{regex: /^(\/usr\/local\/google\/home\/\w+\/|~)workspace\/goma\/gomacc .*$/, skip: 0},
+			{regex: /^[/\w.]+\/gomacc .*$/, skip: 0},
 			// {regex: /[\d\/:]*ERROR:compositing_layer_property_updater\.cc\(59\)]/, skip: 0},
 			// {regex: /WARN: LogGLDebugMessage\(110\):/, skip: 5},
 			// {regex: /ERROR:context_provider_command_buffer\.cc\(344\)\] Unexpected access to ContextGL\(\)/, skip: 0},
@@ -64,6 +64,7 @@ class Formatter extends EventEmitter {
 		this.startTime;
 		this.urlsSeen = [];
 		this.lineNumber = 0;
+		this.incompleteLine = '';
 	}
 
 	onLine(line) {
@@ -122,20 +123,22 @@ class Formatter extends EventEmitter {
 		});
 
 		let lineNumberColor = hasError ? this.COLORS.ired : hasSuccess ? this.COLORS.igreen : this.COLORS.ilblack;
-		let lineNumberStr = `${lineNumberColor}${this.lineNumber}:${this.COLORS.normal}`;
+		let lineNumberStr = `${this.COLORS.normal}${lineNumberColor}${this.lineNumber}:${this.COLORS.normal}`;
 		this.lineNumber++;
 
-		this.emit('line', `${lineNumberStr}${Formatter.condNewLine(hasFile, ' ')}${line}`);
+		this.emit('line', `${lineNumberStr}${hasFile ? '\n' : ' '}${line}`);
 		if (hasError)
 			this.emit('line', '');
 	}
 
 	onData(data) {
-		data.toString().trim().split('\n').forEach(line => this.onLine(line));
+		let lines = (this.incompleteLine + data.toString()).split('\n');
+		this.incompleteLine = lines.pop();
+		lines.forEach(line => this.onLine(line));
 	}
 
-	static condNewLine(condition, alternate = '') {
-		return condition ? '\n' : alternate;
+	onEnd() {
+		this.onLine(this.incompleteLine);
 	}
 
 	static regexAnyWord(words) {

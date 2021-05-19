@@ -61,6 +61,7 @@ class Runner {
 		spawned.stdout.on('data', data => formatter.onData(data));
 		spawned.stderr.on('data', data => formatter.onData(data));
 		spawned.on('error', err => formatter.onLine('err', err));
+		spawned.on('exit', () =>formatter.onEnd());
 	}
 }
 
