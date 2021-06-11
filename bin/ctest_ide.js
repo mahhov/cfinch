@@ -19,8 +19,13 @@ let asyncWrapper = async () => {
 			return console.warn('Missing testFilePath.');
 	}
 
-	let testSet = testFilePath.indexOf('/chromium/src/components/') !== -1 ?
-		'components_unittests' : 'unit_tests';
+	let testSet;
+	if (testFilePath.includes('/chromium/src/components/'))
+		testSet = 'components_unittests';
+	else if (testFilePath.includes('/chromium/src/ui/views/'))
+		testSet = 'views_unittests ';
+	else
+		testSet = 'unit_tests';
 
 	let testFileContent = (await fs.readFile(testFilePath)).toString();
 	let testName = testFileContent.match(/TEST(?:_F)?\(\s*(\w+),/)?.[1];

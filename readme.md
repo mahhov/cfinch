@@ -105,7 +105,7 @@ Arguments: <...>/chromeFinch/bin/ctest_ide out/Default $FilePath$
 ```
 
 Navigate to e.g. `memories_service_unittest.cc` and invoke the external tool. The script will build chromium and run `out/Default/components_unittests --gtest_filter=MemoriesServiceTest.*`.
-Supports `unit_tests` and `components_unittests`.
+Supports `unit_tests`, `components_unittests`, and `views_unittests`.
 
 ## cfinch_study_ide
 
