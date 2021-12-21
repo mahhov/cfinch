@@ -28,7 +28,11 @@ let asyncWrapper = async () => {
 		testSet = 'unit_tests';
 
 	let testFileContent = (await fs.readFile(testFilePath)).toString();
-	let testName = testFileContent.match(/TEST(?:_F)?\(\s*(\w+),/)?.[1];
+	let testName = [...testFileContent.matchAll(/TEST(?:_F)?\(\s*(\w+),/g)]
+		.map(m => m[1])
+		.filter((v, i, a) => a.indexOf(v) === i)
+		.map(testName => `${testName}.*`)
+		.join(':');
 	if (!testName)
 		return console.warn('Missing testName.');
 
