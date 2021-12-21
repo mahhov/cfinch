@@ -40,7 +40,7 @@ let asyncWrapper = async () => {
 		'-b',
 		'-o', out,
 		'-s', testSet,
-		'-f', `${testName}.*`,
+		'-f', testName,
 	]);
 };
 
