@@ -53,10 +53,18 @@ class Formatter extends EventEmitter {
 		};
 
 		this.BLOCKED_MESSAGES = [
-			{regex: /^[/\w.]+\/gomacc .*$/, skip: 0},
-			// {regex: /[\d\/:]*ERROR:compositing_layer_property_updater\.cc\(59\)]/, skip: 0},
-			// {regex: /WARN: LogGLDebugMessage\(110\):/, skip: 5},
-			// {regex: /ERROR:context_provider_command_buffer\.cc\(344\)\] Unexpected access to ContextGL\(\)/, skip: 0},
+			{regex: /^[/\w.]+\/gomacc /, skip: 1},
+			{regex: /^\(chrome:\d+\): IBUS-.+WARNING.+ \*\*:/, skip: 1},
+			{regex: /ERROR:gles2/, skip: 1},
+			{regex: /ERROR:command_buffer_proxy_impl.cc/, skip: 1},
+			{regex: /ERROR:context_provider_command_buffer.cc/, skip: 1},
+			{regex: /ERROR:gpu_channel.cc/, skip: 1},
+			{regex: /Warning: disabling flag --regexp_tier_up due to conflicting flags/, skip: 1},
+			{regex: /ERROR:external_policy_data_updater.cc/, skip: 1},
+			{regex: /ERROR:power_monitor_device_source_stub.cc/, skip: 1},
+			{regex: /libva error: vaGetDriverNameByIndex/, skip: 1},
+			{regex: /ERROR:viz_main_impl.cc/, skip: 1},
+			{regex: /ERROR:gpu_init.cc/, skip: 1},
 		];
 
 		this.skip = 0;
@@ -64,18 +72,16 @@ class Formatter extends EventEmitter {
 		this.startTime;
 		this.urlsSeen = [];
 		this.lineNumber = 0;
-		this.incompleteLine = '';
 	}
 
-	onLine(line) {
+	onLine(line, hasNewLine) {
 		// filter BLOCKED_MESSAGES
-		if (this.skip) {
-			this.skip--;
-			return;
-		}
 		let blocked = this.BLOCKED_MESSAGES.find(({regex}) => regex.test(line));
-		if (blocked) {
+		if (blocked && !this.skip)
 			this.skip = blocked.skip;
+		if (this.skip) {
+			if (hasNewLine)
+				this.skip--;
 			return;
 		}
 
@@ -132,13 +138,9 @@ class Formatter extends EventEmitter {
 	}
 
 	onData(data) {
-		let lines = (this.incompleteLine + data.toString()).split('\n');
-		this.incompleteLine = lines.pop();
-		lines.forEach(line => this.onLine(line));
-	}
-
-	onEnd() {
-		this.onLine(this.incompleteLine);
+		// console.log(data.toString())
+		let lines = data.toString().split('\n');
+		lines.forEach((line, i) => this.onLine(line, i !== lines.length - 1));
 	}
 
 	static regexAnyWord(words) {
