@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+console.log('/src/components/history/core/browser/history_backend_unittest.cc:3570')
+console.log('src/components/history/core/browser/history_backend_unittest.cc:3570')
+console.log('/chromium/src/components/history/core/browser/history_backend_unittest.cc:3570')
+console.log('chromium/src/components/history/core/browser/history_backend_unittest.cc:3570')
+
 const path = require('path');
 const fs = require('fs').promises;
 const ChromeTest = require('../src/ChromeTest');
@@ -23,7 +28,9 @@ let asyncWrapper = async () => {
 	if (testFilePath.includes('/chromium/src/components/'))
 		testSet = 'components_unittests';
 	else if (testFilePath.includes('/chromium/src/ui/views/'))
-		testSet = 'views_unittests ';
+		testSet = 'views_unittests';
+	else if (testFilePath.includes('browsertest.cc'))
+		testSet = 'browser_tests';
 	else
 		testSet = 'unit_tests';
 
@@ -50,3 +57,4 @@ asyncWrapper();
 //   ctest_ide out/Default <...>/src/components/omnibox/browser/document_provider_unittest.cc
 // to
 //   out/Default/components_unittests --gtest_filter=DocumentProviderTest.*
+
