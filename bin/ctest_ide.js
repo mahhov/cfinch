@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-console.log('/src/components/history/core/browser/history_backend_unittest.cc:3570')
-console.log('src/components/history/core/browser/history_backend_unittest.cc:3570')
-console.log('/chromium/src/components/history/core/browser/history_backend_unittest.cc:3570')
-console.log('chromium/src/components/history/core/browser/history_backend_unittest.cc:3570')
-
 const path = require('path');
 const fs = require('fs').promises;
 const ChromeTest = require('../src/ChromeTest');
@@ -38,7 +33,7 @@ let asyncWrapper = async () => {
 	let testName = [...testFileContent.matchAll(/TEST(?:_F|_P|)\(\s*(\w+),/g)]
 		.map(m => m[1])
 		.filter((v, i, a) => a.indexOf(v) === i)
-		.map(testName => `${testName}.*`)
+		.map(testName => `*${testName}.*`)
 		.join(':');
 	if (!testName)
 		return console.warn('Missing testName.');
