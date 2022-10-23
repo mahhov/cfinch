@@ -9,6 +9,8 @@ let asyncWrapper = async () => {
 	let out = process.argv[2];
 	// E.g. <...>/src/components/omnibox/browser/document_provider_unittest.cc
 	let testFilePath = process.argv[3];
+	// E.g. AutocompleteResultTest
+	let filterName = process.argv[4];
 
 	let cachePath = path.resolve(__dirname, '_cached_ctest_ide_inputs.txt');
 	if (testFilePath && testFilePath.match(/test\.cc$/))
@@ -30,7 +32,9 @@ let asyncWrapper = async () => {
 		testSet = 'unit_tests';
 
 	let testFileContent = (await fs.readFile(testFilePath)).toString();
-	let testName = [...testFileContent.matchAll(/TEST(?:_F|_P|)\(\s*(\w+),/g)]
+	let testName = filterName ?
+      `*${filterName}*`
+      :[...testFileContent.matchAll(/TEST(?:_F|_P|)\(\s*(\w+),/g)]
 		.map(m => m[1])
 		.filter((v, i, a) => a.indexOf(v) === i)
 		.map(testName => `*${testName}.*`)
