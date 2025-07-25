@@ -56,6 +56,11 @@ class ChromeFinch extends Runner {
 				values: 1,
 				example: '-gbu https://manukh-4.demos.corp.google.com/',
 				explanation: 'sets google-base-url=https://manukh-4.demos.corp.google.com/'
+			}, {
+				names: ['extra', 'ex'],
+				values: 2,
+				example: '-ex variations-override-country=US',
+				explanation: 'adds extra flags'
 			},
 		];
 	}
@@ -87,6 +92,8 @@ class ChromeFinch extends Runner {
 			commandArgs.push(`force-variation-ids='${args.gwsid.join(',')}'`);
 		if (args.google)
 			commandArgs.push(`google-base-url=${args.google[0]}`);
+		if (args.extra)
+			commandArgs.push(args.extra.join(' '));
 		return commandArgs;
 	}
 

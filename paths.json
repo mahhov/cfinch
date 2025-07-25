@@ -1,4 +1,4 @@
 {
   "chromeSrc": "~/workspace/chromium/src",
-  "ninja": "~/workspace/depot_tools/ninja"
+  "ninja": "~/workspace/depot_tools/autoninja"
 }

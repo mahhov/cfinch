@@ -55,22 +55,34 @@ class Formatter extends EventEmitter {
 		this.BLOCKED_MESSAGES = [
 			{regex: /^[/\w.]+\/gomacc /, skip: 1},
 			{regex: /^\(chrome:\d+\): IBUS-.+WARNING.+ \*\*:/, skip: 1},
-			{regex: /ERROR:gles2/, skip: 1},
-			{regex: /ERROR:command_buffer_proxy_impl.cc/, skip: 1},
-			{regex: /ERROR:context_provider_command_buffer.cc/, skip: 1},
-			{regex: /ERROR:gpu_channel.cc/, skip: 1},
+			// {regex: /ERROR:gles2/, skip: 1},
+			// {regex: /ERROR:command_buffer_proxy_impl.cc/, skip: 1},
+			// {regex: /ERROR:context_provider_command_buffer.cc/, skip: 1},
+			// {regex: /ERROR:gpu_channel.cc/, skip: 1},
 			{regex: /Warning: disabling flag --regexp_tier_up due to conflicting flags/, skip: 1},
-			{regex: /ERROR:external_policy_data_updater.cc/, skip: 1},
-			{regex: /ERROR:power_monitor_device_source_stub.cc/, skip: 1},
+			// {regex: /ERROR:external_policy_data_updater.cc/, skip: 1},
+			// {regex: /ERROR:power_monitor_device_source_stub.cc/, skip: 1},
 			{regex: /libva error: vaGetDriverNameByIndex/, skip: 1},
-			{regex: /ERROR:viz_main_impl.cc/, skip: 1},
-			{regex: /ERROR:gpu_init.cc/, skip: 1},
+			// {regex: /ERROR:viz_main_impl.cc/, skip: 1},
+			// {regex: /ERROR:gpu_init.cc/, skip: 1},
+			// {regex: /ERROR:file_io_posix.cc/, skip: 1},
+			// {regex: /ERROR:gpu_process_host.cc/, skip: 1},
+			// {regex: /ERROR:html_media_element.cc/, skip: 1},
+			{regex: /Fontconfig error: Cannot load default config file: No such file: (null)/, skip: 1},
+			// {regex: /ERROR:gl_utils.cc/, skip: 1},
+			// {regex: /ERROR:web_app_database.cc/, skip: 1},
+			// {regex: /ERROR:account_info_fetcher.cc/, skip: 1},
+			// {regex: /ERROR:policy_logger.cc/, skip: 1},
+			{regex: /Warning: No Dawn device lost callback was set/, skip: 1},
+			// {regex: /ERROR:render_widget_host_view_aura.cc/, skip: 1},
+			{regex: /\[(\d+:\d+:\d+)?\/\d+\.\d+:ERROR:[.\w]+\(\d+\)]/, skip: 1},
+			{regex: /ALSA lib [.\w]+:\d+:\(\w+\)/, skip: 1}, // ALSA lib conf.c:5704:(snd_config_expand) Evaluate error:
 		];
 
 		this.skip = 0;
 		this.lastLineTime;
 		this.startTime;
-		this.urlsSeen = [];
+		this.nicknames = [];
 		this.lineNumber = 0;
 	}
 
@@ -119,13 +131,13 @@ class Formatter extends EventEmitter {
 			return `[${tt} ${this.startTime} + ${Number(time) - this.startTime}]`;
 		});
 
-		// URL nicknaming
-		line = line.replace(/\[(https:[^\]]+)]/g, (_, url) => {
-			if (!this.urlsSeen.includes[url])
-				this.urlsSeen.push(url);
-			let index = this.urlsSeen.indexOf(url);
-			let urlChar = (Math.floor(index / 26) || '') + String.fromCharCode(65 + index % 26);
-			return `[==${urlChar}== ${url}]`;
+		// URL & ptr nicknaming
+		line = line.replace(/\[(https:[^\]]+|0x\w{4,12})]/g, (_, full) => {
+			if (!this.nicknames.includes(full))
+        this.nicknames.push(full);
+			let index = this.nicknames.indexOf(full);
+			let nickname = (Math.floor(index / 26) || '') + String.fromCharCode(65 + index % 26);
+			return `[==${nickname}== ${full}]`;
 		});
 
 		let lineNumberColor = hasError ? this.COLORS.ired : hasSuccess ? this.COLORS.igreen : this.COLORS.ilblack;

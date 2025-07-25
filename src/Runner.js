@@ -37,7 +37,7 @@ class Runner {
 	}
 
 	static spawnHelper(runArgs, build, buildName, out) {
-		let buildCommand = build ? `${paths.ninja} -j 1000 -C ${out} ${buildName}` : '';
+		let buildCommand = build ? `${paths.ninja} -C ${out} ${buildName}` : '';
 		let runCommand = [`${out}/${buildName}`, ...runArgs].join('\\\n  --');
 		console.log('');
 		console.green(new Date().toLocaleString());
